@@ -1,13 +1,13 @@
 {
-  "name": "appengine-hello-world",
-  "description": "Simple Hello World Node.js sample for Google App Engine Standard Environment.",
+  "name": "REST-and-MySQL-example",
+  "description": "Code sample for running REST APIs on Node.js with a mysql database",
   "version": "0.0.2",
   "private": true,
   "license": "Apache-2.0",
-  "author": "Google Inc.",
+  "author": "Yasaman Amannejad",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git"
+    "url": "https://github.com/Yasaman-A/rest-API-examples"
   },
   "engines": {
     "node": ">=12.0.0"

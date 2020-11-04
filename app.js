@@ -1,9 +1,8 @@
+
 'use strict';
 
 const express = require('express');
-
 const app = express();
-app.enable('trust proxy');
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -11,13 +10,13 @@ app.use((req, res, next) => {
   next();
 });
 
-
 const startServer = async _ => {
+
   const database = require("./src/database");
-  let pool = await database.setup();
+  let db = await database.setup();
 
   const routes = require('./src/routes');
-  routes.register(app, pool);
+  routes.register(app, db);
 
   const PORT = process.env.PORT || 8080;
   const server = app.listen(PORT, () => {
