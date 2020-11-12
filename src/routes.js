@@ -3,58 +3,31 @@
 module.exports.register = (app, database) => {
 
     app.get('/', async (req, res) => {
-        res.status(200).send("You did it! I am now running:) ").end();
+        res.status(200).send("You did it:) I am now running with Firestore! ").end();
     });
 
 
-    app.get('/api/emp', async (req, res) => {
-        console.log("=================");
-        let query;
-        if (req.query.name) {
-            let _name = req.query.name;
-            query = database.query(
-                'select * from rest_emp where name = ?',
-                [_name]
-            );
-        } else {
-            query = database.query(
-                'SELECT * FROM rest_emp'
-            );
-        }
-        console.log(query);
-        const emps = await query;
-
-        res.status(200).send(JSON.stringify(emps)).end();
+    app.get('/api/user', async (req, res) => {
+        const ref = database.collection("user").doc("test@test.com");
+        ref.get().then(x => {
+            res.status(200).send(JSON.stringify(x.data())).end();
+        })
+            .catch(() => res.status(500).send(JSON.stringify("Invalid Request")).end());
     });
 
 
-
-    app.get('/api/emp/:id', async (req, res) => {
-        let _id = req.params.id;
-        const query = database.query(
-            'select * from rest_emp where id = ?',
-            [_id]
-        );
-        const emps = await query;
-        res.status(200).send(JSON.stringify(emps)).end();
-    });
-
-
-
-    app.post('/api/emp', async (req, res) => {
+    app.post('/api/user', async (req, res) => {
         let _name = req.body.name;
-        let _phone = req.body.phone;
         let _email = req.body.email;
-        let _address = req.body.address;
 
-        const query = database.query(
-            'insert into rest_emp(name, phone, email, address) values (?, ?, ?, ?)',
-            [_name, _phone, _email, _address]
-        );
-        const emps = await query;
-        res.status(200).send('Employee added successfully!').end();
+        const userCredential = {
+            "name": _name
+        }
+
+        const ref = database.collection("user").doc(_email);
+        ref.set(userCredential)
+            .then(() => { res.status(201).send("User added successfully!"); })
+            .catch(() => { res.status(500).send("Invalid Request!"); });
     });
-
-
 
 };

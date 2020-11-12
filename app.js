@@ -12,8 +12,7 @@ app.use((req, res, next) => {
 
 const startServer = async _ => {
 
-  const database = require("./src/database");
-  let db = await database.setup();
+  var { db } = require("./src/database");
 
   const routes = require('./src/routes');
   routes.register(app, db);
