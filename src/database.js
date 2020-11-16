@@ -1,25 +1,19 @@
-const mysql = require('promise-mysql');
+const MongoClient = require('mongodb').MongoClient;
 
-require('dotenv').config()
-
+require('dotenv').config();
 
 const connectToDatabase = async () => {
+    const uri =
+        "mongodb://"
+        + process.env.DB_USER + ":"
+        + process.env.DB_PASS + "@"
+        + process.env.DB_HOST;
 
-    return await mysql.createPool({
+    const client = new MongoClient(uri);
+    await client.connect();
+    var db = client.db(process.env.DB_NAME);
 
-        user: process.env.DB_USER, // e.g. 'my-db-user'
-        password: process.env.DB_PASS, // e.g. 'my-db-password'
-        database: process.env.DB_NAME, // e.g. 'my-database'
-        host: process.env.DB_HOST, // e.g. '127.0.0.1'
-        port: process.env.DB_PORT, // e.g. '3306'
-
-        //Specify additional properties here.
-        connectionLimit: 5,
-        connectTimeout: 10000, // 10 seconds
-        acquireTimeout: 10000, // 10 seconds
-        waitForConnections: true, // Default: true
-        queueLimit: 0, // Default: 0
-    });
+    return db
 };
 
 module.exports.setup = connectToDatabase;

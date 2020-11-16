@@ -6,40 +6,32 @@ module.exports.register = (app, database) => {
         res.status(200).send("You did it! I am now running:) ").end();
     });
 
-
     app.get('/api/emp', async (req, res) => {
-        console.log("=================");
-        let query;
         if (req.query.name) {
             let _name = req.query.name;
-            query = database.query(
-                'select * from rest_emp where name = ?',
-                [_name]
-            );
+            database.collection('rest_emp').findOne({ name: _name }, function (err, result) {
+                if (err)
+                    throw err
+                res.status(200).send(JSON.stringify(result)).end();
+            })
         } else {
-            query = database.query(
-                'SELECT * FROM rest_emp'
-            );
+            database.collection('rest_emp').find({}).toArray(function (err, result) {
+                if (err)
+                    throw err
+                res.status(200).send(JSON.stringify(result)).end();
+            })
         }
-        console.log(query);
-        const emps = await query;
 
-        res.status(200).send(JSON.stringify(emps)).end();
     });
-
-
 
     app.get('/api/emp/:id', async (req, res) => {
         let _id = req.params.id;
-        const query = database.query(
-            'select * from rest_emp where id = ?',
-            [_id]
-        );
-        const emps = await query;
-        res.status(200).send(JSON.stringify(emps)).end();
+        database.collection('rest_emp').findOne({ id: _id }, function (err, result) {
+            if (err)
+                throw err
+            res.status(200).send(JSON.stringify(result)).end();
+        })
     });
-
-
 
     app.post('/api/emp', async (req, res) => {
         let _name = req.body.name;
@@ -47,12 +39,12 @@ module.exports.register = (app, database) => {
         let _email = req.body.email;
         let _address = req.body.address;
 
-        const query = database.query(
-            'insert into rest_emp(name, phone, email, address) values (?, ?, ?, ?)',
-            [_name, _phone, _email, _address]
-        );
-        const emps = await query;
-        res.status(200).send('Employee added successfully!').end();
+        database.collection('rest_emp').insertOne({ name: _name, phone: _phone, address: _address, email: _email }, function (err, result) {
+            if (err)
+                throw err
+            res.status(200).send('Employee added successfully!').end();
+        })
+
     });
 
 
