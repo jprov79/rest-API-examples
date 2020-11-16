@@ -2,7 +2,6 @@ const mysql = require('promise-mysql');
 
 require('dotenv').config()
 
-
 const connectToDatabase = async () => {
 
     return await mysql.createPool({

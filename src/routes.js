@@ -6,7 +6,6 @@ module.exports.register = (app, database) => {
         res.status(200).send("You did it! I am now running:) ").end();
     });
 
-
     app.get('/api/emp', async (req, res) => {
         console.log("=================");
         let query;
@@ -39,8 +38,6 @@ module.exports.register = (app, database) => {
         res.status(200).send(JSON.stringify(emps)).end();
     });
 
-
-
     app.post('/api/emp', async (req, res) => {
         let _name = req.body.name;
         let _phone = req.body.phone;
@@ -54,7 +51,4 @@ module.exports.register = (app, database) => {
         const emps = await query;
         res.status(200).send('Employee added successfully!').end();
     });
-
-
-
 };
