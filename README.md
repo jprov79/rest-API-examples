@@ -7,3 +7,5 @@ Steps to run the code:
 2. npm install
 
 3. npm start
+
+** The code in the main branch is working with mysql database. Working examples with Firestore and MongoDB are provided in other branches.
