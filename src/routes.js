@@ -9,7 +9,7 @@ module.exports.register = (app, database) => {
     app.get('/api/emp', async (req, res) => {
         if (req.query.name) {
             let _name = req.query.name;
-            database.collection('rest_emp').findOne({ name: _name }, function (err, result) {
+            database.collection('rest_emp').find({ name: _name }).toArray(function (err, result) {
                 if (err)
                     throw err
                 res.status(200).send(JSON.stringify(result)).end();
@@ -21,7 +21,6 @@ module.exports.register = (app, database) => {
                 res.status(200).send(JSON.stringify(result)).end();
             })
         }
-
     });
 
     app.get('/api/emp/:id', async (req, res) => {
